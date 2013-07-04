@@ -938,6 +938,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             am.moveTaskToFront(ad.taskId, ActivityManager.MOVE_TASK_WITH_HOME,
                     opts);
         } else {
+		    boolean backPressed = mRecentsActivity != null && mRecentsActivity.mBackPressed;
             if (floating) {
                 if (DEBUG) Log.v(TAG, "Starting floating activity " + intent);
                 try {
@@ -946,16 +947,16 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                 } catch (SecurityException e) {
                     Log.e(TAG, "Recents does not have the permission to launch " + intent, e);
                 }
-            } else {
+            } else if (!floating || !backPressed) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY
                         | Intent.FLAG_ACTIVITY_TASK_ON_HOME
                         | Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
                 if (DEBUG) Log.v(TAG, "Starting activity " + intent);
-                try {
                     context.startActivityAsUser(intent, opts,
                             new UserHandle(UserHandle.USER_CURRENT));
-                } catch (SecurityException e) {
-                    Log.e(TAG, "Recents does not have the permission to launch " + intent, e);
+                if (floating && mRecentsActivity != null) {
+                    mRecentsActivity.finish();
                 } catch (ActivityNotFoundException e) {
                     Log.e(TAG, "Error launching activity " + intent, e);
                 }
@@ -1203,12 +1204,12 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                     ViewHolder viewHolder = (ViewHolder) selectedView.getTag();
                     if (viewHolder != null) {
                         final TaskDescription ad = viewHolder.taskDescription;
+                        dismissAndGoBack();
                         Intent intent = ad.intent;
                         intent.addFlags(Intent.FLAG_FLOATING_WINDOW
                                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         intent.setFlags(intent.getFlags() & ~Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
                         getContext().startActivity(intent);
-                        dismissAndGoBack();
                     }
                 } else if (item.getItemId() == R.id.recent_add_split_view && mHaloEnabled != 1) {
                     // Either start a new activity in split view, or move the current task
