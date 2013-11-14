@@ -5267,6 +5267,12 @@ public final class Settings {
         public static final String PACKAGE_INSTALLER_QUICK_MODE_ENABLED = "package_installer_quick_mode_enabled";
 
         /**
+         * Expanded desktop system bars visibility in locked state
+         * @hide
+         */
+        public static final String EXPANDED_DESKTOP_SYSTEM_BARS_VISIBILITY = "expanded_desktop_system_bars_visibility";
+
+        /**
          * Whether to use the custom status bar header or not
          * @hide
          */
