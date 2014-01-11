@@ -84,7 +84,6 @@ import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewPropertyAnimator;
@@ -1742,6 +1741,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (!((provisioned && ent.notification.getScore() >= HIDE_ICONS_BELOW_SCORE)
                     || showNotificationEvenIfUnprovisioned(ent.notification) || mHaloTaskerActive)) continue;
             if (!notificationIsForCurrentUser(ent.notification)) continue;
+            if (isIconHiddenByUser(ent.notification.getPackageName())) continue;
             toShow.add(ent.icon);
         }
 
