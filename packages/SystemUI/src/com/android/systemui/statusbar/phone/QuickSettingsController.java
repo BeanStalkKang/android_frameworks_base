@@ -30,6 +30,7 @@ import static com.android.internal.util.beanstalk.QSConstants.TILE_CUSTOM;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_CUSTOM_KEY;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_DELIMITER;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_EXPANDEDDESKTOP;
+import static com.android.internal.util.beanstalk.QSConstants.TILE_FCHARGE;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_IMESWITCHER;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_LOCATION;
 import static com.android.internal.util.beanstalk.QSConstants.TILE_LOCKSCREEN;
@@ -80,6 +81,7 @@ import com.android.systemui.quicksettings.BugReportTile;
 import com.android.systemui.quicksettings.ContactTile;
 import com.android.systemui.quicksettings.CustomTile;
 import com.android.systemui.quicksettings.ExpandedDesktopTile;
+import com.android.systemui.quicksettings.FChargeTile;
 import com.android.systemui.quicksettings.LocationTile;
 import com.android.systemui.quicksettings.InputMethodTile;
 import com.android.systemui.quicksettings.LteTile;
@@ -210,6 +212,8 @@ public class QuickSettingsController {
                 qs = new BrightnessTile(mContext, this);
             } else if (tile.equals(TILE_RINGER)) {
                 qs = new RingerModeTile(mContext, this);
+            } else if (tile.equals(TILE_FCHARGE)) {
+                qs = new FChargeTile(mContext, this, mHandler);
             } else if (tile.equals(TILE_SYNC)) {
                 qs = new SyncTile(mContext, this);
             } else if (tile.equals(TILE_WIFIAP) && mobileDataSupported) {
