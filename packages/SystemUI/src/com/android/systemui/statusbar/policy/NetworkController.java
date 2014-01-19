@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
@@ -169,6 +170,8 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
     private boolean mHasMobileDataFeature;
 
     boolean mDataAndWifiStacked = false;
+
+    private UpdateUIListener mUpdateUIListener = null;
 
     public interface SignalCluster {
         void setWifiIndicators(boolean visible, int strengthIcon, int activityIcon,
@@ -1238,6 +1241,11 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
             wifiLabel = customLabel;
     }  
 
+        // Cleanup the double quotes
+        if (wifiLabel.length() > 0) {
+            wifiLabel = wifiLabel.replaceAll("^\"|\"$", "");
+        }
+
         if (DEBUG) {
             Log.d(TAG, "refreshViews connected={"
                     + (mWifiConnected?" wifi":"")
@@ -1263,6 +1271,18 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
                     + " mWifiIconId=0x" + Integer.toHexString(mWifiIconId)
                     + " mQSWifiIconId=0x" + Integer.toHexString(mQSWifiIconId)
                     + " mBluetoothTetherIconId=0x" + Integer.toHexString(mBluetoothTetherIconId));
+        }
+
+        int hideLabels = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.NOTIFICATION_HIDE_LABELS, 0, UserHandle.USER_CURRENT);
+
+        switch (hideLabels) {
+            case 1 : mobileLabel = "";
+                combinedLabel = wifiLabel;
+                break;
+            case 2 : wifiLabel = "";
+                combinedLabel = mobileLabel;
+                break;
         }
 
         // update QS
@@ -1440,6 +1460,11 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
                 v.setText(mobileLabel); // comes from the telephony stack
                 v.setVisibility(View.VISIBLE);
             }
+        }
+
+        // Update the dependency UI
+        if (mUpdateUIListener != null) {
+            mUpdateUIListener.onUpdateUI();
         }
     }
 
@@ -1698,4 +1723,14 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
         updateTelephonySignalStrength();
     }
 
+    /**
+     * Let others listen for UI updates in NetworkController.
+     */
+    public static interface UpdateUIListener {
+        void onUpdateUI();
+    }
+
+    public void setListener(UpdateUIListener listener) {
+        mUpdateUIListener = listener;
+    }
 }

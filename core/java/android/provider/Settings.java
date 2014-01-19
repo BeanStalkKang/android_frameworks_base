@@ -2841,6 +2841,12 @@ public final class Settings {
         public static final String LCD_DENSITY = "lcd_density";
 
         /**
+         * Whether double-tap and hold on the lock glowpad starts the torch
+         * @hide
+         */
+        public static final String LOCKSCREEN_GLOWPAD_TORCH = "lockscreen_glowpad_torch";
+
+        /**
          * @deprecated Use {@link android.provider.Settings.Global#LOW_BATTERY_SOUND}
          * instead
          * @hide
@@ -3996,12 +4002,6 @@ public final class Settings {
         public static final String MENU_VISIBILITY = "menu_visibility";
 
         /**
-         * Hide carrier information on notification drawer
-         * @hide
-         */
-        public static final String NOTIFICATION_HIDE_CARRIER = "notification_hide_carrier";
-
-        /**
           * Stores values for notification shortcut targets
           * @hide
           */
@@ -4236,6 +4236,12 @@ public final class Settings {
          * @hide
          */
         public static final String CALL_END_SOUND = "call_end_sound";
+
+        /**
+         * Hide network labels in the notification drawer
+         * @hide
+         */
+        public static final String NOTIFICATION_HIDE_LABELS = "notification_hide_labels";
 
         /**
          * Width and height of output vide expressed in WxH
@@ -4594,6 +4600,54 @@ public final class Settings {
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
 
         /**
+         * TeloRadio enable
+         * @hide
+         */
+        public static final String TELO_RADIO_ENABLED = "telo_radio_enabled";
+
+        /**
+         * TeloRadio 2g with wifi
+         * @hide
+         */
+        public static final String TELO_RADIO_2G_WIFI = "telo_radio_2g_wifi";
+
+        /**
+         * TeloRadio LTE in high power
+         * @hide
+         */
+        public static final String TELO_RADIO_LTE = "telo_radio_lte";
+
+        /**
+         * TeloRadio change 2g when screenoff
+         * @hide
+         */
+        public static final String TELO_RADIO_2G_SCREENOFF = "telo_radio_2g_screenoff";
+
+        /**
+         * TeloRadio time to change 2g when screenoff
+         * @hide
+         */
+        public static final String TELO_RADIO_2G_SCREENOFF_TIME = "telo_radio_2g_screenoff_timeout";
+
+        /**
+         * TeloRadio change 3g when unlock device
+         * @hide
+         */
+        public static final String TELO_RADIO_GO3G_UNLOCK = "telo_radio_go_3g_unlock";
+
+        /**
+         *  TeloRadio Low power network
+         * @hide
+         */
+        public static final String TELO_RADIO_LOW_POWER = "telo_radio_low_power";
+
+        /**
+         * TeloRadio High power network
+         * @hide
+         */
+        public static final String TELO_RADIO_HIGH_POWER = "telo_radio_high_power";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -4687,6 +4741,11 @@ public final class Settings {
             PHONE_BLACKLIST_PRIVATE_NUMBER_MODE,
             PHONE_BLACKLIST_UNKNOWN_NUMBER_MODE,
             PHONE_BLACKLIST_REGEX_ENABLED,
+            TELO_RADIO_ENABLED,
+            TELO_RADIO_2G_WIFI,
+            TELO_RADIO_LTE,
+            TELO_RADIO_2G_SCREENOFF,
+            TELO_RADIO_GO3G_UNLOCK,
         };
 
         // Settings moved to Settings.Secure
