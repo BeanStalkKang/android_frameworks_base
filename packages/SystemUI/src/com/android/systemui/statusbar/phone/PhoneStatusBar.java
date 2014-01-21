@@ -144,6 +144,8 @@ import com.android.systemui.statusbar.SignalClusterView;
 import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.phone.ShortcutsWidget;
 import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
+import com.android.systemui.statusbar.policy.BatteryTextMeterView;
 import com.android.systemui.statusbar.policy.BluetoothController;
 import com.android.systemui.statusbar.policy.ClockCenter;
 import com.android.systemui.statusbar.policy.DateView;
@@ -234,6 +236,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     NetworkController mNetworkController;
     RotationLockController mRotationLockController;
     MSimNetworkController mMSimNetworkController;
+
+    BatteryTextMeterView mBatteryTextView;
 
     int mNaturalBarHeight = -1;
     int mIconSize = -1;
@@ -1174,6 +1178,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mRotationLockController = new RotationLockController(mContext);
         final SignalClusterView signalCluster =
                 (SignalClusterView)mStatusBarView.findViewById(R.id.signal_cluster);
+
+        if (mBatteryTextView == null) {
+            mBatteryTextView = (BatteryTextMeterView) mStatusBarView.findViewById(R.id.battery_text);
+            mBatteryController.addStateChangedCallback((BatteryStateChangeCallback) mBatteryTextView);
+        }
 
         mNetworkController.addSignalCluster(signalCluster);
         signalCluster.setNetworkController(mNetworkController);
