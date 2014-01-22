@@ -249,7 +249,13 @@ public class Clock extends TextView implements DemoMode {
 
         CharSequence dateString = null;
 
-        String result = sdf.format(mCalendar.getTime());
+        String result="";
+        if (is24) {
+            result= sdf.format(mCalendar.getTime());
+        }
+        else {
+            result = DateFormat.format(format, mCalendar.getTime()).toString();
+        }
 
         if (mClockDateDisplay != CLOCK_DATE_DISPLAY_GONE) {
             Date now = new Date();
