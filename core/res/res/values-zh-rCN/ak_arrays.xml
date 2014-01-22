@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Operator translations -->
+    <string-array name="operator_translate_names">
+        <item>中国电信</item>
+        <item>中国电信</item>
+        <item>中国移动</item>
+        <item>中国移动</item>
+        <item>中国移动</item>
+        <item>中国移动</item>
+        <item>中国移动</item>
+        <item>中国联通</item>
+        <item>中国联通</item>
+        <item>中国联通</item>
+        <item>中国联通</item>
+        <item>中国联通</item>
+        <item>中国联通</item>
+    </string-array>
+
+</resources>

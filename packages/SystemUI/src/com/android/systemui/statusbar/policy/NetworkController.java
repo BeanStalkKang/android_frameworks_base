@@ -52,6 +52,7 @@ import com.android.internal.telephony.cdma.EriInfo;
 import com.android.internal.util.AsyncChannel;
 import com.android.systemui.DemoMode;
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.CarrierLabel;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -1274,6 +1275,8 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
             mPhoneSignalIconId = mDataSignalIconId = mDataTypeIconId = mQSDataTypeIconId = 0;
             mQSPhoneSignalIconId = 0;
         }
+
+        mobileLabel = CarrierLabel.operatorCheck(mContext, mobileLabel);
 
         if (DEBUG) {
             Log.d(TAG, "refreshViews connected={"

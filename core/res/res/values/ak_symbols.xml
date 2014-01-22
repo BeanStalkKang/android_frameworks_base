@@ -7,4 +7,8 @@
   <java-symbol type="integer" name="config_networkSpeedIndicatorSingleLineFontSize" />
   <java-symbol type="integer" name="config_networkSpeedIndicatorDualLineFontSize" />
 
+  <!-- Operator translations -->
+  <java-symbol type="array" name="operator_translate_ids" />
+  <java-symbol type="array" name="operator_translate_names" />
+
 </resources>

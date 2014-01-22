@@ -34,6 +34,7 @@ import java.util.Locale;
 
 public class CarrierText extends TextView {
     private static CharSequence mSeparator;
+    private Context mContext;
 
     private LockPatternUtils mLockPatternUtils;
 
@@ -84,6 +85,7 @@ public class CarrierText extends TextView {
 
     public CarrierText(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         mLockPatternUtils = new LockPatternUtils(mContext);
         boolean useAllCaps = mContext.getResources().getBoolean(R.bool.kg_use_all_caps);
         setTransformationMethod(new CarrierTextTransformationMethod(mContext, useAllCaps));
@@ -91,12 +93,29 @@ public class CarrierText extends TextView {
 
     protected void updateCarrierText(State simState, CharSequence plmn, CharSequence spn) {
         CharSequence text = getCarrierTextForSimState(simState, plmn, spn);
+        if (text != null) text = operatorCheck(text.toString());
         String customLabel = Settings.System.getString(getContext().getContentResolver(),
                 Settings.System.CUSTOM_CARRIER_LABEL);
         if (customLabel == null || customLabel.length() == 0) {
             setText(text != null ? text.toString().toUpperCase() : null);
         } else {
             setText(customLabel);
+        }
+    }
+    
+    public String operatorCheck(String CarrierLabelText) {
+        if (CarrierLabelText != null) {
+            String str1 = CarrierLabelText.trim().toLowerCase();
+            String ids[] = mContext.getResources().getStringArray(com.android.internal.R.array.operator_translate_ids);
+            String names[] = mContext.getResources().getStringArray(com.android.internal.R.array.operator_translate_names);
+            for (int i = 0; i < ids.length; i++) {
+                if (str1.equals(ids[i])) {
+                    return names[i];
+                }
+            }
+            return str1;
+        } else {
+            return "";
         }
     }
 
