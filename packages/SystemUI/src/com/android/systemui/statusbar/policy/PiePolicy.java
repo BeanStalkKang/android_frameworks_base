@@ -33,7 +33,9 @@ import com.android.systemui.statusbar.util.SpnOverride;
 
 import java.text.SimpleDateFormat;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.text.TextUtils;
+import java.util.Calendar;
 import java.util.Date;
 
 public class PiePolicy {
@@ -152,9 +154,13 @@ public class PiePolicy {
     public static String getAmPm() {
         String amPm = "";
         if(!is24Hours()) {
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    mContext.getString(R.string.pie_am_pm));
-            amPm = sdf.format(new Date()).toUpperCase();
+            if(isCN) {
+                Calendar inDate = Calendar.getInstance();
+                amPm = DateUtils.getAMPMCNString(inDate.get(Calendar.HOUR), inDate.get(Calendar.AM_PM));
+            } else {
+                SimpleDateFormat sdf = new SimpleDateFormat(mContext.getString(R.string.pie_am_pm));
+                amPm = sdf.format(new Date()).toUpperCase();
+            }
         }
         return amPm;
     }
