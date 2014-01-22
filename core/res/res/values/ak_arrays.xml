@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Operator translations -->
+    <string-array name="operator_translate_ids" translatable="false">
+        <item>ctnet</item>
+        <item>46003</item>
+        <item>china mobile</item>
+        <item>chn-mobile</item>
+        <item>46000</item>
+        <item>46002</item>
+        <item>46007</item>
+        <item>china unicom</item>
+        <item>chn-unicom</item>
+        <item>46001</item>
+        <item>46006</item>
+        <item>46020</item>
+        <item>chn-cugsm</item>
+    </string-array>
+
+    <string-array name="operator_translate_names">
+        <item>China Telecom</item>
+        <item>China Telecom</item>
+        <item>China Mobile</item>
+        <item>China Mobile</item>
+        <item>China Mobile</item>
+        <item>China Mobile</item>
+        <item>China Mobile</item>
+        <item>China Unicom</item>
+        <item>China Unicom</item>
+        <item>China Unicom</item>
+        <item>China Unicom</item>
+        <item>China Unicom</item>
+        <item>China Unicom</item>
+    </string-array>
+
+</resources>

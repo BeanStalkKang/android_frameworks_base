@@ -50,6 +50,7 @@ import com.android.internal.telephony.cdma.EriInfo;
 import com.android.internal.util.AsyncChannel;
 import com.android.systemui.DemoMode;
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.CarrierLabel;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -1245,6 +1246,8 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
         if (wifiLabel.length() > 0) {
             wifiLabel = wifiLabel.replaceAll("^\"|\"$", "");
         }
+
+        mobileLabel = CarrierLabel.operatorCheck(mContext, mobileLabel);
 
         if (DEBUG) {
             Log.d(TAG, "refreshViews connected={"

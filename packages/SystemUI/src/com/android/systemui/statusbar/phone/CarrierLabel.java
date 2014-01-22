@@ -48,6 +48,8 @@ public class CarrierLabel extends TextView {
 
     private Context mContext;
 
+    String mLastCarrier;
+
     public CarrierLabel(Context context) {
         this(context, null);
     }
@@ -90,6 +92,7 @@ public class CarrierLabel extends TextView {
             String action = intent.getAction();
             if (TelephonyIntents.SPN_STRINGS_UPDATED_ACTION.equals(action)
                     || "com.android.settings.LABEL_CHANGED".equals(action)) {
+                mLastCarrier = intent.getStringExtra(TelephonyIntents.EXTRA_SPN);
                 updateNetworkName(intent.getBooleanExtra(TelephonyIntents.EXTRA_SHOW_SPN, false),
                         intent.getStringExtra(TelephonyIntents.EXTRA_SPN),
                         intent.getBooleanExtra(TelephonyIntents.EXTRA_SHOW_PLMN, false),
@@ -104,11 +107,11 @@ public class CarrierLabel extends TextView {
             Log.d("CarrierLabel", "updateNetworkName showSpn=" + showSpn + " spn=" + spn
                     + " showPlmn=" + showPlmn + " plmn=" + plmn);
         }
-        final String str;
+        String str = "";
         final boolean plmnValid = showPlmn && !TextUtils.isEmpty(plmn);
         final boolean spnValid = showSpn && !TextUtils.isEmpty(spn);
         if (plmnValid && spnValid) {
-            str = plmn + "|" + spn;
+            str = spn;
         } else if (plmnValid) {
             str = plmn;
         } else if (spnValid) {
@@ -118,10 +121,27 @@ public class CarrierLabel extends TextView {
         }
         String customCarrierLabel = Settings.System.getStringForUser(mContext.getContentResolver(),
                 Settings.System.CUSTOM_CARRIER_LABEL, UserHandle.USER_CURRENT);
-        if (!TextUtils.isEmpty(customCarrierLabel)) {
+        if (!TextUtils.isEmpty(customCarrierLabel))
             setText(customCarrierLabel);
+        else if (TextUtils.isEmpty(str.trim()))
+            setText(operatorCheck(mContext, mLastCarrier));
+        else
+            setText(operatorCheck(mContext, str));
+    }
+
+    public static String operatorCheck(Context context, String CarrierLabelText) {
+        if (CarrierLabelText != null) {
+            String str1 = CarrierLabelText.trim().toLowerCase();
+            String ids[] = context.getResources().getStringArray(com.android.internal.R.array.operator_translate_ids);
+            String names[] = context.getResources().getStringArray(com.android.internal.R.array.operator_translate_names);
+            for (int i = 0; i < ids.length; i++) {
+                if (str1.equals(ids[i])) {
+                    return names[i];
+                }
+            }
+            return str1;
         } else {
-            setText(TextUtils.isEmpty(str) ? getOperatorName() : str);
+            return "";
         }
     }
 
