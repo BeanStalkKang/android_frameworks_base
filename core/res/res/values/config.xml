@@ -1444,12 +1444,17 @@
              4 - Menu
              8 - Assistant (search)
             16 - App switch
+            32 - Camera
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareKeys">15</integer>
 
     <!-- Enable statusbar double tap gesture to put device to sleep -->
     <bool name="config_disableDoubleTapSleepGesture">false</bool>
+
+    <!-- Indicates that the device has Single-stage Camera key
+         (without "Focus" state) instead of Dual-stage. -->
+    <bool name="config_singleStageCameraKey">false</bool>
 
    <!-- set to false if we dont need to consider data
          service state to display signal strength bars -->
