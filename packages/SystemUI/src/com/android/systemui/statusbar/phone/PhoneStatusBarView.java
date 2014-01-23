@@ -191,6 +191,9 @@ public class PhoneStatusBarView extends PanelBar {
         if (mScrimColor != 0 && ActivityManager.isHighEndGfx()) {
             mBar.mStatusBarWindow.setBackgroundColor(0);
         }
+
+        // show up you pie controls
+        mBar.setupTriggers(false);
     }
 
     @Override
@@ -199,6 +202,10 @@ public class PhoneStatusBarView extends PanelBar {
         if (openPanel != mLastFullyOpenedPanel) {
             openPanel.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
         }
+
+        // back off you pie controls!
+        mBar.setupTriggers(true);
+
         mFadingPanel = openPanel;
         mLastFullyOpenedPanel = openPanel;
         mShouldFade = true; // now you own the fade, mister

@@ -1432,7 +1432,7 @@ public class InputMethodService extends AbstractInputMethodService {
         }
         return true;
     }
-    
+
     public void showWindow(boolean showInput) {
         if (DEBUG) Log.v(TAG, "Showing window: showInput=" + showInput
                 + " mShowInputRequested=" + mShowInputRequested
@@ -1440,7 +1440,7 @@ public class InputMethodService extends AbstractInputMethodService {
                 + " mWindowCreated=" + mWindowCreated
                 + " mWindowVisible=" + mWindowVisible
                 + " mInputStarted=" + mInputStarted);
-        
+
         if (mInShowWindow) {
             Log.w(TAG, "Re-entrance in to showWindow");
             return;
