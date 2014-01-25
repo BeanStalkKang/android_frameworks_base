@@ -4696,12 +4696,6 @@ public final class Settings {
          */
         public static final String PIE_SELECT = "pie_select";
 
-         /**
-         * Allows blurring the lockscreen background
-         * @hide
-         */
-        public static final String LOCKSCREEN_BLUR_RADIUS = "lockscreen_blur_radius";
-
         /**
          * @hide
          */
