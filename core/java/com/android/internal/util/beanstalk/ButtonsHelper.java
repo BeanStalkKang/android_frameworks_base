@@ -115,7 +115,7 @@ public class ButtonsHelper {
     private static String getPieProvider(Context context) {
         String config = Settings.System.getStringForUser(
                     context.getContentResolver(),
-                    Settings.System.PIE_BUTTONS_CONFIG,
+                    Settings.System.SPIE_BUTTONS_CONFIG,
                     UserHandle.USER_CURRENT);
         if (config == null) {
             config = ButtonsConstants.NAVIGATION_CONFIG_DEFAULT;
@@ -131,7 +131,7 @@ public class ButtonsHelper {
             config = ConfigSplitHelper.setButtonsConfig(buttonsConfig, false);
         }
         Settings.System.putString(context.getContentResolver(),
-                    Settings.System.PIE_BUTTONS_CONFIG, config);
+                    Settings.System.SPIE_BUTTONS_CONFIG, config);
     }
 
     public static ArrayList<ButtonConfig> getPieSecondLayerConfig(Context context) {
@@ -147,10 +147,10 @@ public class ButtonsHelper {
     private static String getPieSecondLayerProvider(Context context) {
         String config = Settings.System.getStringForUser(
                     context.getContentResolver(),
-                    Settings.System.PIE_BUTTONS_CONFIG_SECOND_LAYER,
+                    Settings.System.SPIE_BUTTONS_CONFIG_SECOND_LAYER,
                     UserHandle.USER_CURRENT);
         if (config == null) {
-            config = ButtonsConstants.PIE_SECOND_LAYER_CONFIG_DEFAULT;
+            config = ButtonsConstants.SPIE_SECOND_LAYER_CONFIG_DEFAULT;
         }
         return config;
     }
@@ -158,12 +158,12 @@ public class ButtonsHelper {
     public static void setPieSecondLayerConfig(Context context, ArrayList<ButtonConfig> buttonsConfig, boolean reset) {
         String config;
         if (reset) {
-            config = ButtonsConstants.PIE_SECOND_LAYER_CONFIG_DEFAULT;
+            config = ButtonsConstants.SPIE_SECOND_LAYER_CONFIG_DEFAULT;
         } else {
             config = ConfigSplitHelper.setButtonsConfig(buttonsConfig, false);
         }
         Settings.System.putString(context.getContentResolver(),
-                    Settings.System.PIE_BUTTONS_CONFIG_SECOND_LAYER, config);
+                    Settings.System.SPIE_BUTTONS_CONFIG_SECOND_LAYER, config);
     }
 
     // get and set the notification shortcut configs

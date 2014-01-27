@@ -51,7 +51,7 @@ public class ButtonsConstants {
         + ACTION_NULL    + ACTION_DELIMITER
         + ICON_EMPTY;
 
-    public static final String PIE_SECOND_LAYER_CONFIG_DEFAULT =
+    public static final String SPIE_SECOND_LAYER_CONFIG_DEFAULT =
           ACTION_POWER_MENU    + ACTION_DELIMITER
         + ACTION_NULL          + ACTION_DELIMITER
         + ICON_EMPTY           + ACTION_DELIMITER

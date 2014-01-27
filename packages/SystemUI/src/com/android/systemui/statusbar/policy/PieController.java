@@ -53,10 +53,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 
-import com.android.internal.util.liquid.ButtonConfig;
-import com.android.internal.util.liquid.ButtonsConstants;
-import com.android.internal.util.liquid.ButtonsHelper;
-import com.android.internal.util.liquid.LiquidActions;
+import com.android.internal.util.beanstalk.ButtonConfig;
+import com.android.internal.util.beanstalk.ButtonsConstants;
+import com.android.internal.util.beanstalk.ButtonsHelper;
+import com.android.internal.util.beanstalk.SlimActions;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.pie.PieItem;
@@ -205,47 +205,47 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTONS_CONFIG), false, this,
+                    Settings.System.SPIE_BUTTONS_CONFIG), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SIZE), false, this,
+                    Settings.System.SPIE_SIZE), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_COLOR), false, this,
+                    Settings.System.SPIE_BUTTON_COLOR), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_PRESSED_COLOR), false, this,
+                    Settings.System.SPIE_BUTTON_PRESSED_COLOR), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_LONG_PRESSED_COLOR), false, this,
+                    Settings.System.SPIE_BUTTON_LONG_PRESSED_COLOR), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_OUTLINE_COLOR), false, this,
+                    Settings.System.SPIE_BUTTON_OUTLINE_COLOR), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_ICON_COLOR), false, this,
+                    Settings.System.SPIE_ICON_COLOR), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_ICON_COLOR_MODE), false, this,
+                    Settings.System.SPIE_ICON_COLOR_MODE), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_ALPHA), false, this,
+                    Settings.System.SPIE_BUTTON_ALPHA), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_BUTTON_PRESSED_ALPHA), false, this,
+                    Settings.System.SPIE_BUTTON_PRESSED_ALPHA), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_SECOND_LAYER_ACTIVE), false, this,
+                    Settings.System.SPIE_SECOND_LAYER_ACTIVE), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_MENU), false, this,
+                    Settings.System.SPIE_MENU), false, this,
                     UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange) {
             boolean secondLayerActive = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_SECOND_LAYER_ACTIVE, 0) == 1;
+                    Settings.System.SPIE_SECOND_LAYER_ACTIVE, 0) == 1;
 
             if (mSecondLayerActive != secondLayerActive) {
                 if (secondLayerActive) {
@@ -274,7 +274,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.PIE_BUTTONS_CONFIG_SECOND_LAYER),
+                    Settings.System.getUriFor(Settings.System.SPIE_BUTTONS_CONFIG_SECOND_LAYER),
                     false,
                     this);
         }
@@ -324,7 +324,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                     (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         }
 
-        Tracker.sDistance = mContext.getResources().getDimensionPixelSize(R.dimen.pie_trigger_distance);
+        Tracker.sDistance = mContext.getResources().getDimensionPixelSize(R.dimen.spie_trigger_distance);
     }
 
     public void detachContainer() {
@@ -361,7 +361,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         mPieContainer.setOnSnapListener(this);
 
         mSecondLayerActive = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_SECOND_LAYER_ACTIVE, 0) == 1;
+                Settings.System.SPIE_SECOND_LAYER_ACTIVE, 0) == 1;
 
         // construct the slices
         constructSlices();
@@ -401,16 +401,16 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         }
 
         // construct navbar slice
-        int inner = res.getDimensionPixelSize(R.dimen.pie_navbar_radius);
-        int outer = inner + res.getDimensionPixelSize(R.dimen.pie_navbar_height);
+        int inner = res.getDimensionPixelSize(R.dimen.spie_navbar_radius);
+        int outer = inner + res.getDimensionPixelSize(R.dimen.spie_navbar_height);
         mNavigationSlice = new PieSliceContainer(mPieContainer, PieSlice.IMPORTANT
                 | PieDrawable.DISPLAY_ALL);
         mNavigationSlice.setGeometry(START_ANGLE, 180 - 2 * EMPTY_ANGLE, inner, outer);
 
         // construct maybe navbar slice second layer
         if (mSecondLayerActive) {
-            inner = res.getDimensionPixelSize(R.dimen.pie_navbar_second_layer_radius);
-            outer = inner + res.getDimensionPixelSize(R.dimen.pie_navbar_height);
+            inner = res.getDimensionPixelSize(R.dimen.spie_navbar_second_layer_radius);
+            outer = inner + res.getDimensionPixelSize(R.dimen.spie_navbar_height);
             mNavigationSliceSecondLayer = new PieSliceContainer(mPieContainer, PieSlice.IMPORTANT
                     | PieDrawable.DISPLAY_ALL);
             mNavigationSliceSecondLayer.setGeometry(START_ANGLE, 180 - 2 * EMPTY_ANGLE, inner, outer);
@@ -422,13 +422,13 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         if (mSecondLayerActive) {
             mPieContainer.addSlice(mNavigationSliceSecondLayer);
             // adjust dimensions for sysinfo when second layer is active
-            inner = res.getDimensionPixelSize(R.dimen.pie_sysinfo_second_layer_radius);
+            inner = res.getDimensionPixelSize(R.dimen.spie_sysinfo_second_layer_radius);
         } else {
-            inner = res.getDimensionPixelSize(R.dimen.pie_sysinfo_radius);
+            inner = res.getDimensionPixelSize(R.dimen.spie_sysinfo_radius);
         }
 
         // construct sysinfo slice
-        outer = inner + res.getDimensionPixelSize(R.dimen.pie_sysinfo_height);
+        outer = inner + res.getDimensionPixelSize(R.dimen.spie_sysinfo_height);
         mSysInfo = new PieSysInfo(mContext, mPieContainer, this, PieDrawable.DISPLAY_NOT_AT_TOP);
         mSysInfo.setGeometry(START_ANGLE, 180 - 2 * EMPTY_ANGLE, inner, outer);
         mPieContainer.addSlice(mSysInfo);
@@ -445,7 +445,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         mIconResizeFactor = 1.0f;
         // check the size set from the user and set resize values if needed
         float diff = PieLayout.PIE_ICON_START_SIZE_FACTOR - Settings.System.getFloat(resolver,
-                Settings.System.PIE_SIZE, PieLayout.PIE_CONTROL_SIZE_DEFAULT);
+                Settings.System.SPIE_SIZE, PieLayout.PIE_CONTROL_SIZE_DEFAULT);
         if (diff > 0.0f) {
             mIconResize = true;
             mIconResizeFactor = 1.0f - diff;
@@ -465,7 +465,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         }
 
         mShowMenuVisibility = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.PIE_MENU, MENU_VISIBILITY_SYSTEM,
+                Settings.System.SPIE_MENU, MENU_VISIBILITY_SYSTEM,
                 UserHandle.USER_CURRENT);
 
         setNavigationIconHints(mNavigationIconHints, true);
@@ -550,7 +550,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                 // all other is handled in PieItem
                 int customImageColorize = Settings.System.getInt(
                         mContext.getContentResolver(),
-                        Settings.System.PIE_ICON_COLOR_MODE, 0);
+                        Settings.System.SPIE_ICON_COLOR_MODE, 0);
                 mBackIcon = prepareBackIcon(d,
                     (customImageColorize == 0 || customImageColorize == 2), true);
             } else {
@@ -602,7 +602,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
 
     private Drawable prepareBackIcon(Drawable d, boolean customImageColorize, boolean forceResize) {
         int drawableColor = (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_ICON_COLOR, -2));
+                Settings.System.SPIE_ICON_COLOR, -2));
         if (mIconResize && !forceResize) {
             d = resizeIcon(null, d, false);
         } else if (forceResize) {
@@ -768,7 +768,7 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
         }
 
         int triggerSlots = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.PIE_GRAVITY, Position.LEFT.FLAG);
+                Settings.System.SPIE_GRAVITY, Position.LEFT.FLAG);
 
         triggerSlots = triggerSlots & ~mPosition.FLAG | position.FLAG;
 
@@ -779,24 +779,24 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
     @Override
     public void onLongClick(PieItem item) {
         String type = (String) item.longTag;
-        if (!LiquidActions.isActionKeyEvent(type)) {
+        if (!SlimActions.isActionKeyEvent(type)) {
             mPieContainer.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
         mPieContainer.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_LONG_CLICKED);
-        LiquidActions.processAction(mContext, type, true);
+        SlimActions.processAction(mContext, type, true);
     }
 
     @Override
     public void onClick(PieItem item) {
         String type = (String) item.tag;
-        if (!LiquidActions.isActionKeyEvent(type)) {
+        if (!SlimActions.isActionKeyEvent(type)) {
             mPieContainer.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         }
         if (!type.equals(ButtonsConstants.ACTION_MENU)) {
             mPieContainer.playSoundEffect(SoundEffectConstants.CLICK);
         }
         mPieContainer.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED);
-        LiquidActions.processAction(mContext, type, false);
+        SlimActions.processAction(mContext, type, false);
     }
 
     private void doHapticTriggerFeedback() {
@@ -820,24 +820,24 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
             return null;
         }
         if (mServiceState == null || mServiceState.getState() == ServiceState.STATE_OUT_OF_SERVICE) {
-            return mContext.getString(R.string.pie_phone_status_no_service);
+            return mContext.getString(R.string.spie_phone_status_no_service);
         }
         if (mServiceState.getState() == ServiceState.STATE_POWER_OFF) {
-            return mContext.getString(R.string.pie_phone_status_airplane_mode);
+            return mContext.getString(R.string.spie_phone_status_airplane_mode);
         }
         if (mServiceState.isEmergencyOnly()) {
-            return mContext.getString(R.string.pie_phone_status_emergency_only);
+            return mContext.getString(R.string.spie_phone_status_emergency_only);
         }
         return mServiceState.getOperatorAlphaLong();
     }
 
     public String getBatteryLevel() {
         if (mBatteryStatus == BatteryManager.BATTERY_STATUS_FULL) {
-            return mContext.getString(R.string.pie_battery_status_full);
+            return mContext.getString(R.string.spie_battery_status_full);
         }
         if (mBatteryStatus == BatteryManager.BATTERY_STATUS_CHARGING) {
-            return mContext.getString(R.string.pie_battery_status_charging, mBatteryLevel);
+            return mContext.getString(R.string.spie_battery_status_charging, mBatteryLevel);
         }
-        return mContext.getString(R.string.pie_battery_status_discharging, mBatteryLevel);
+        return mContext.getString(R.string.spie_battery_status_discharging, mBatteryLevel);
     }
 }

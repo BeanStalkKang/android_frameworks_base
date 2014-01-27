@@ -108,49 +108,49 @@ public class PieItem extends PieLayout.PieDrawable {
         final Resources res = context.getResources();
 
         float backgroundAlpha = (Settings.System.getFloat(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_ALPHA, 0.3f));
+                Settings.System.SPIE_BUTTON_ALPHA, 0.3f));
         float backgroundSelectedAlpha = (Settings.System.getFloat(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_PRESSED_ALPHA, 0.0f));
+                Settings.System.SPIE_BUTTON_PRESSED_ALPHA, 0.0f));
 
         int backgroundPaintColor = (Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_COLOR, -2));
+                Settings.System.SPIE_BUTTON_COLOR, -2));
         if (backgroundPaintColor == -2) {
-            backgroundPaintColor = res.getColor(R.color.pie_background_color);
+            backgroundPaintColor = res.getColor(R.color.spie_background_color);
         }
         mBackgroundPaint.setColor(stripAlpha(backgroundPaintColor));
         mBackgroundPaint.setAlpha((int) ((1-backgroundAlpha) * 255));
         mBackgroundPaint.setAntiAlias(true);
 
         int selectedPaintColor = (Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_PRESSED_COLOR, -2));
+                Settings.System.SPIE_BUTTON_PRESSED_COLOR, -2));
         if (selectedPaintColor == -2) {
-            selectedPaintColor = res.getColor(R.color.pie_selected_color);
+            selectedPaintColor = res.getColor(R.color.spie_selected_color);
         }
         mSelectedPaint.setColor(stripAlpha(selectedPaintColor));
         mSelectedPaint.setAlpha((int) ((1-backgroundSelectedAlpha) * 255));
         mSelectedPaint.setAntiAlias(true);
 
         int longPressPaintColor = (Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_LONG_PRESSED_COLOR, -2));
+                Settings.System.SPIE_BUTTON_LONG_PRESSED_COLOR, -2));
         if (longPressPaintColor == -2) {
-            longPressPaintColor = res.getColor(R.color.pie_long_pressed_color);
+            longPressPaintColor = res.getColor(R.color.spie_long_pressed_color);
         }
         mLongPressPaint.setColor(stripAlpha(longPressPaintColor));
         mLongPressPaint.setAlpha((int) ((1-backgroundSelectedAlpha) * 255));
         mLongPressPaint.setAntiAlias(true);
 
         int outlinePaintColor = (Settings.System.getInt(context.getContentResolver(),
-                Settings.System.PIE_BUTTON_OUTLINE_COLOR, -2));
+                Settings.System.SPIE_BUTTON_OUTLINE_COLOR, -2));
         if (outlinePaintColor == -2) {
-            outlinePaintColor = res.getColor(R.color.pie_outline_color);
+            outlinePaintColor = res.getColor(R.color.spie_outline_color);
         }
         mOutlinePaint.setColor(outlinePaintColor);
         mOutlinePaint.setAlpha((int) ((1-backgroundAlpha) * 255));
         mOutlinePaint.setAntiAlias(true);
         mOutlinePaint.setStyle(Style.STROKE);
-        mOutlinePaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.pie_outline));
+        mOutlinePaint.setStrokeWidth(res.getDimensionPixelSize(R.dimen.spie_outline));
 
-        setColor(res.getColor(R.color.pie_foreground_color));
+        setColor(res.getColor(R.color.spie_foreground_color));
     }
 
     public void setGap(float gap) {
@@ -204,9 +204,9 @@ public class PieItem extends PieLayout.PieDrawable {
     public void setColor(int color) {
         if (mView instanceof ImageView) {
             int drawableColorMode = (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_ICON_COLOR_MODE, 0));
+                    Settings.System.SPIE_ICON_COLOR_MODE, 0));
             int drawableColor = (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.PIE_ICON_COLOR, -2));
+                    Settings.System.SPIE_ICON_COLOR, -2));
 
             ImageView imageView = (ImageView) mView;
             Drawable drawable = imageView.getDrawable();
