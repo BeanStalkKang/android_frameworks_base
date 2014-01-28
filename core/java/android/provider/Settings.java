@@ -5011,6 +5011,12 @@ public final class Settings {
         public static final String SPIE_BUTTONS_CONFIG_SECOND_LAYER = "spie_buttons_config_second_layer";
 
         /**
+         * Whether enabled PackageInstaller Quick Mode
+         * @hide
+         */
+        public static final String PACKAGE_INSTALLER_QUICK_MODE_ENABLED = "package_installer_quick_mode_enabled";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
