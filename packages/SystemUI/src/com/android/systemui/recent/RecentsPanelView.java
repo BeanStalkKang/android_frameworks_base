@@ -917,6 +917,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         if (usingDrawingCache) {
             holder.thumbnailViewImage.setDrawingCacheEnabled(false);
         }
+        RecentTasksLoader.getInstance(mContext).cancelPreloadingFirstTask();
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -938,6 +939,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         // mListAdapter.notifyDataSetChanged();
 
         if (mRecentTaskDescriptions.size() == 0) {
+            RecentTasksLoader.getInstance(mContext).cancelPreloadingFirstTask();
             dismissAndGoBack();
         }
 
