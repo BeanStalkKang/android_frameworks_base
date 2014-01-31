@@ -3014,6 +3014,20 @@ public final class Settings {
         public static final String QUICK_SETTINGS_TILES_FLIP = "quick_settings_tiles_flip";
 
         /**
+         * Should Dialer suggest nearby phone numbers
+         *
+         * @hide
+         */
+        public static final String ENABLE_DIALER_SUGGESTIONS = "enable_dialer_suggestions";
+
+        /**
+         * Should Dialer reverse look up names for unknown phone numbers
+         *
+         * @hide
+         */
+        public static final String ENABLE_DIALER_REVERSE_LOOKUP = "enable_dialer_reverse_lookup";
+
+        /**
          * Quick Settings Panel Tiles to Use
          *
          * @hide
@@ -4810,6 +4824,12 @@ public final class Settings {
          * @hide
          */
         public static final String CAMERA_UNLOCK_SCREEN = "camera_unlock_screen";
+
+        /**
+         * This preference enables showing the power menu on LockScreen.
+         * @hide
+         */
+        public static final String LOCKSCREEN_ENABLE_POWER_MENU = "lockscreen_enable_power_menu";
 
 	/**	
          *  Enable statusbar double tap gesture on to put device to sleep
