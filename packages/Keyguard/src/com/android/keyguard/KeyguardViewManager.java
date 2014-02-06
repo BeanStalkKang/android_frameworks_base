@@ -146,6 +146,8 @@ public class KeyguardViewManager {
                     Settings.System.LOCKSCREEN_BLUR_BEHIND), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_BLUR_RADIUS), false, this);
+			resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_NOTIFICATIONS), false, this);
         }
 
         @Override
@@ -164,7 +166,7 @@ public class KeyguardViewManager {
     	mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),
     			Settings.System.LOCKSCREEN_BLUR_RADIUS, 12);
         mLockscreenNotifications = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.LOCKSCREEN_NOTIFICATIONS, mLockscreenNotifications ? 1 : 0) == 1;
+                Settings.System.LOCKSCREEN_NOTIFICATIONS, 0) == 1;
     
     	if (mBlurEnabled) {
             isSeeThroughEnabled = true;
