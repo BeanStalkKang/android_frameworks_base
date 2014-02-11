@@ -507,7 +507,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.PIE_CONTROLS), false, this,
+                    Settings.System.SPIE_CONTROLS), false, this,
                     UserHandle.USER_ALL);
             update();
         }
@@ -598,7 +598,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mNotificationShortcutsLayout.updateShortcuts();
                 }
             } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.PIE_CONTROLS))) {
+                    Settings.System.SPIE_CONTROLS))) {
                 attachPieContainer(isPieEnabled());
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.EXPANDED_DESKTOP_STATE))) {
@@ -649,7 +649,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     private boolean isPieEnabled() {
         return Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.PIE_CONTROLS, 0,
+                Settings.System.SPIE_CONTROLS, 0,
                 UserHandle.USER_CURRENT) == 1;
     }
 
@@ -857,6 +857,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             });
         }
 
+         // Setup pie container if enabled
+        attachPieContainer(isPieEnabled());
+
         if (mRecreating) {
         } else {
             addActiveDisplayView();
@@ -865,8 +868,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             /* ChaosLab: GestureAnywhere - END */
         }
 
-        // Setup pie container if enabled
-        attachPieContainer(isPieEnabled());
 
         // figure out which pixel-format to use for the status bar.
         mPixelFormat = PixelFormat.OPAQUE;
