@@ -19,9 +19,9 @@
 package com.android.systemui.quicksettings;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
-import android.animation.Animator.AnimatorListener;
 import android.app.ActivityManagerNative;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -35,19 +35,20 @@ import android.os.UserHandle;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.systemui.R;
-import com.android.systemui.statusbar.phone.QuickSettingsController;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView;
+import com.android.systemui.statusbar.phone.QuickSettingsController;
 import com.android.systemui.statusbar.phone.QuickSettingsTileView;
 
 public class QuickSettingsTile implements OnClickListener {
@@ -72,13 +73,25 @@ public class QuickSettingsTile implements OnClickListener {
 
     private Handler mHandler = new Handler();
 
-    protected Vibrator mVibrator;
+    protected final Vibrator mVibrator;
+
+    private final boolean mFlipRight;
+    private final boolean mShouldVibrate;
+
+    // Gesture
+    protected final GestureDetector mGestureDetector;
+    protected final View.OnTouchListener mGestureListener;
 
     public QuickSettingsTile(Context context, QuickSettingsController qsc) {
         this(context, qsc, R.layout.quick_settings_tile_basic);
     }
 
     public QuickSettingsTile(Context context, QuickSettingsController qsc, int layout) {
+        this(context, qsc, layout, true, true);
+    }
+
+    public QuickSettingsTile(Context context, QuickSettingsController qsc, int layout,
+                             boolean flipRight, boolean vibrate) {
         mContext = context;
         mGenericCollapse = true;
         mDrawable = R.drawable.ic_notifications;
@@ -89,6 +102,15 @@ public class QuickSettingsTile implements OnClickListener {
         mTileLayout = layout;
         mPrefs = mContext.getSharedPreferences("quicksettings", Context.MODE_PRIVATE);
         mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+        mGestureDetector = new GestureDetector(mContext, new QuickTileGestureDetector());
+        mGestureListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        };
+        mFlipRight = flipRight;
+        mShouldVibrate = vibrate;
     }
 
     public void setupQuickSettingsTile(LayoutInflater inflater,
@@ -105,8 +127,7 @@ public class QuickSettingsTile implements OnClickListener {
         mContainer.addView(mTile);
         onPostCreate();
         updateQuickSettings();
-        mTile.setOnClickListener(this);
-        mTile.setOnLongClickListener(mOnLongClick);
+        mTile.setOnTouchListener(mGestureListener);
     }
 
     void onPostCreate() {}
@@ -144,14 +165,19 @@ public class QuickSettingsTile implements OnClickListener {
     }
 
     public boolean isVibrationEnabled() {
-        return (Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.QUICK_SETTINGS_TILES_VIBRATE, 1) == 1);
+        return ((Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.QUICK_SETTINGS_TILES_VIBRATE, 1) == 1)
+                && mShouldVibrate);
     }
 
     public void vibrateTile(int duration) {
-        if (!isVibrationEnabled()) { return; }
+        if (!isVibrationEnabled()) {
+            return;
+        }
         if (mVibrator != null) {
-            if (mVibrator.hasVibrator()) { mVibrator.vibrate(duration); }
+            if (mVibrator.hasVibrator()) {
+                mVibrator.vibrate(duration);
+            }
         }
     }
 
@@ -161,17 +187,19 @@ public class QuickSettingsTile implements OnClickListener {
     }
 
     public void flipTile(int delay) {
-        flipTile(delay, true);
+        flipTile(delay, mFlipRight);
     }
 
     public void flipTile(int delay, boolean flipRight) {
-        if (!isFlipTilesEnabled()) { return; }
+        if (!isFlipTilesEnabled()) {
+            return;
+        }
         final AnimatorSet anim = (AnimatorSet) AnimatorInflater.loadAnimator(
                 mContext,
                 (flipRight ? R.anim.flip_right : R.anim.flip_left));
         anim.setTarget(mTile);
         anim.setDuration(200);
-        anim.addListener(new AnimatorListener(){
+        anim.addListener(new AnimatorListener() {
 
             @Override
             public void onAnimationEnd(Animator animation) {}
@@ -184,7 +212,7 @@ public class QuickSettingsTile implements OnClickListener {
 
         });
 
-        Runnable doAnimation = new Runnable(){
+        Runnable doAnimation = new Runnable() {
             @Override
             public void run() {
                 anim.start();
@@ -209,6 +237,7 @@ public class QuickSettingsTile implements OnClickListener {
             // Dismiss the lock screen when Settings starts.
             ActivityManagerNative.getDefault().dismissKeyguardOnNextActivity();
         } catch (RemoteException e) {
+            // ignored
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivityAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
@@ -218,7 +247,7 @@ public class QuickSettingsTile implements OnClickListener {
     @Override
     public void onClick(View v) {
         if (mOnClick != null) {
-            mOnClick.onClick(v);
+            mOnClick.onClick(mTile);
         }
 
         boolean shouldCollapse = Settings.System.getIntForUser(mContext.getContentResolver(),
@@ -231,5 +260,60 @@ public class QuickSettingsTile implements OnClickListener {
 
         vibrateTile(30);
         flipTile(0);
+    }
+
+    public void onFlingRight() {
+        flipTile(0, true);
+    }
+
+    public void onFlingLeft() {
+        flipTile(0, false);
+    }
+
+    private class QuickTileGestureDetector extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_MAX_OFF_PATH = 250;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            QuickSettingsTile.this.onClick(mTile);
+            return false;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            if (mOnLongClick != null) {
+                mOnLongClick.onLongClick(mTile);
+            }
+
+            vibrateTile(100);
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            try {
+                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+                    return false;
+                }
+                // right to left swipe
+                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    onFlingLeft();
+                } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+                        && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                    onFlingRight();
+                }
+            } catch (Exception e) {
+                // nothing
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
     }
 }
