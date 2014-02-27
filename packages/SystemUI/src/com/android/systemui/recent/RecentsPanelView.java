@@ -138,6 +138,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
 
     MemInfoReader mMemInfoReader = new MemInfoReader();
 
+    private RecentsActivity mRecentsActivity;
+
     public static interface RecentsScrollView {
         public int numItemsInOneScreenful();
         public void setAdapter(TaskDescriptionAdapter adapter);
@@ -957,9 +959,6 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                             new UserHandle(UserHandle.USER_CURRENT));
                 if (floating && mRecentsActivity != null) {
                     mRecentsActivity.finish();
-                } catch (ActivityNotFoundException e) {
-                    Log.e(TAG, "Error launching activity " + intent, e);
-                }
             }
         }
         if (usingDrawingCache) {
