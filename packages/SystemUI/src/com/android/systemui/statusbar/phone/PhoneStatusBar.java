@@ -505,7 +505,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 			resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CARRIER), false, this);
 			resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.SPIE_DISABLE_STATUSBAR_INFO),
+                    Settings.System.PIE_DISABLE_STATUSBAR_INFO),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER), false, this);
@@ -1939,11 +1939,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (mStatusBarView == null) return;
         ContentResolver resolver = mContext.getContentResolver();
         boolean disableStatusBarInfo = Settings.System.getInt(resolver,
-                Settings.System.SPIE_DISABLE_STATUSBAR_INFO, 0) == 1;
+                Settings.System.PIE_DISABLE_STATUSBAR_INFO, 0) == 1;
         if (disableStatusBarInfo) {
             // call only the settings if statusbar info is really hidden
             int pieMode = Settings.System.getInt(resolver,
-                    Settings.System.SPIE_CONTROLS, 0);
+                    Settings.System.PIE_CONTROLS, 0);
             boolean expandedDesktopState = Settings.System.getInt(resolver,
                     Settings.System.EXPANDED_DESKTOP_STATE, 0) == 1;
 
