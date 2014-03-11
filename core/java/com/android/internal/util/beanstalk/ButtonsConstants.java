@@ -27,6 +27,7 @@ public class ButtonsConstants {
     public static final String ACTION_EXPANDED_DESKTOP     = "**expanded_desktop**";
     public static final String ACTION_KEYGUARD_SEARCH      = "**keyguard_search**";
     public static final String ACTION_PIE                  = "**pie**";
+    public static final String ACTION_PAPIE                = "**papie**";
     public static final String ACTION_NAVBAR               = "**nav_bar**";
     public static final String ACTION_SMART_PULLDOWN       = "**smart_pulldown**";
 

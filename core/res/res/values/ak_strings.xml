@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- status message in phone options dialog for when pie is on -->
+    <string name="global_actions_papie_mode_on_status">PA Pie is ON</string>
+    <!-- status message in phone options dialog for when pie is off -->
+    <string name="global_actions_papie_mode_off_status">PA Pie is OFF</string>
+
+</resources>

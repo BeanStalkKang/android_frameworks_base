@@ -11,4 +11,7 @@
   <java-symbol type="array" name="operator_translate_ids" />
   <java-symbol type="array" name="operator_translate_names" />
 
+  <java-symbol type="string" name="global_actions_papie_mode_on_status" />
+  <java-symbol type="string" name="global_actions_papie_mode_off_status" />
+
 </resources>
