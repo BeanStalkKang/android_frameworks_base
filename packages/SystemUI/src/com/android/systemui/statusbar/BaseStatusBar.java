@@ -359,6 +359,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                     Settings.System.PIE_STICK), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.EXPANDED_DESKTOP_STATE), false, this);
+            update();
         }
 
         @Override
@@ -371,22 +372,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                 Settings.System.PIE_STICK, 1) == 0) {
                 updatePieControls();
             }
-        }
-    };
-
-   private class SettingsObserver extends ContentObserver {
-        public SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        public void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            update();
+           update();
         }
 
         private void update() {
@@ -640,8 +626,8 @@ public abstract class BaseStatusBar extends SystemUI implements
             });
             attachPie();
 
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
+//        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
+//        settingsObserver.observe();
 
 	// Listen for status bar icon color changes
         mContext.getContentResolver().registerContentObserver(
