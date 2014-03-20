@@ -64,7 +64,6 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -259,9 +258,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private EdgeGestureManager mEdgeGestureManager;
 
-    // left-hand icons
-    public LinearLayout mStatusIcons;
-	
     // UI-specific methods
 
     /**
@@ -371,26 +367,6 @@ public abstract class BaseStatusBar extends SystemUI implements
                 Settings.System.PIE_STICK, 1) == 0) {
                 updatePieControls();
             }
-        }
-    };
-
-   private class SettingsObserver extends ContentObserver {
-        public SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        public void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            update();
-        }
-
-        private void update() {
-            ContentResolver resolver = mContext.getContentResolver();
         }
     };
 
@@ -642,39 +618,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
         SettingsObserver settingsObserver = new SettingsObserver(new Handler());
         settingsObserver.observe();
-
-	// Listen for status bar icon color changes
-        mContext.getContentResolver().registerContentObserver(
-            Settings.System.getUriFor(Settings.System.SYSTEM_ICON_COLOR), false, new ContentObserver(new Handler()) {
-                @Override
-                public void onChange(boolean selfChange) {
-                    updateIconColor();
-            }});
-
-        updateIconColor();
-
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-    }
-
-    private void updateIconColor() {
-        ContentResolver resolver = mContext.getContentResolver();
-
-        boolean mCustomColor = Settings.System.getIntForUser(resolver,
-                Settings.System.CUSTOM_SYSTEM_ICON_COLOR, 0, UserHandle.USER_CURRENT) == 1;
-        int systemColor = Settings.System.getIntForUser(resolver,
-                Settings.System.SYSTEM_ICON_COLOR, -2, UserHandle.USER_CURRENT);
-
-        if (mStatusIcons != null) {
-            for(int i = 0; i < mStatusIcons.getChildCount(); i++) {
-                Drawable iconDrawable = ((ImageView)mStatusIcons.getChildAt(i)).getDrawable();
-                if (mCustomColor) {
-                    iconDrawable.setColorFilter(systemColor, PorterDuff.Mode.SRC_ATOP);
-                } else {
-                    iconDrawable.clearColorFilter();
-                }
-            }
-        }
     }
 
     public void setHaloTaskerActive(boolean haloTaskerActive, boolean updateNotificationIcons) {
