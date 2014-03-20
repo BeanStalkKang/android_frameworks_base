@@ -1512,7 +1512,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         updateBackground();
         return mStatusBarView;
     }
-<<<<<<< HEAD
 
     private void updateCustomHeaderStatus() {
         ContentResolver resolver = mContext.getContentResolver();
