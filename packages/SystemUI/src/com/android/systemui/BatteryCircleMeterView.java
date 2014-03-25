@@ -331,13 +331,7 @@ public class BatteryCircleMeterView extends ImageView {
 
         setVisibility(mActivated ? View.VISIBLE : View.GONE);
 
-        if (mBatteryReceiver != null) {
-            mBatteryReceiver.updateRegistration();
-        }
-
-        if (mActivated && mAttached) {
-            invalidate();
-        }
+        invalidate();
     }
 
     /***
