@@ -4872,12 +4872,6 @@ public final class Settings {
         public static final String FLIP_ACTION_KEY = "flip_action";
 
         /**
-         * direct call by the dialer. The value is
-         * boolean (1 or 0).
-         */
-        public static final String DIALER_DIRECT_CALL = "dialer_direct_call";
-
-        /**
          * show traffic in statusbar. The value is
          * int (0: Hide  or 1: Only Rx 2: Rx&Tx).
          */
